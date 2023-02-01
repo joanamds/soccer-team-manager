@@ -4,8 +4,8 @@ const express = require('express');
 const teams = [
   {
     id: 1,
-    name: 'São Paulo Futebol Clube',
-    initials: 'SPFC',
+    name: 'Clube de Regatas Vasco da Gama',
+    initials: 'CRVG',
   },
   {
     id: 2,
@@ -54,6 +54,14 @@ app.post('/teams', (req, res) => {
   teams.push(newTeam);
 
   res.status(201).json({ team: newTeam });
+});
+
+app.delete('/teams/:id', (req, res) => {
+  const { id } = req.params;
+  const arrayPosition = teams.findIndex((team) => team.id === Number(id));
+  teams.splice(arrayPosition, 1);
+
+  res.status(200).end();
 });
 
 module.exports = app;
