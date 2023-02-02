@@ -20,14 +20,14 @@ app.get('/teams/:id', existingId, async (req, res) => {
 });
 
 // arranja os middlewares para chamar validateTeam primeiro
-app.post('/teams', validateTeam, async (req, res) => {
-  const getAllTeams = teams.allTeams();
-  const { nextId } = getAllTeams;
-  const team = { id: nextId, ...req.body };
-  getAllTeams.push(team);
-  nextId.id += 1;
-  res.status(201).json(team);
-});
+// app.post('/teams', validateTeam, async (req, res) => {
+//   const getAllTeams = await teams.allTeams();
+//   const { nextId } = getAllTeams;
+//   const team = { id: nextId, ...req.body };
+//   getAllTeams.push(team);
+//   nextId += 1;
+//   res.status(201).json(team);
+// });
 
 app.put('/teams/:id', validateTeam, existingId, async (req, res) => {
   const id = Number(req.params.id);
