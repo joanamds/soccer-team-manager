@@ -3,6 +3,10 @@ const express = require('express');
 
 const app = express();
 
+const validateTeam = require('./middlewares/validateTeam');
+
+const existingId = require('./middlewares/existingId');
+
 let nextId = 3;
 const teams = [
   {
@@ -21,24 +25,11 @@ app.use(express.json());
 
 app.get('/teams', (req, res) => res.json(teams));
 
-app.get('/teams/:id', (req, res) => {
+app.get('/teams/:id', existingId, (req, res) => {
   const id = Number(req.params.id);
   const team = teams.find((t) => t.id === id);
-  if (team) {
-    res.json(team);
-  } else {
-    res.sendStatus(404);
-  }
+  res.json(team);
 });
-
-const validateTeam = (req, res, next) => {
-  const requiredProperties = ['nome', 'sigla'];
-  if (requiredProperties.every((property) => property in req.body)) {
-    next(); // chama o próximo middleware
-  } else {
-    res.sendStatus(400); // ou já responde avisando que deu erro
-  }
-};
 
 // arranja os middlewares para chamar validateTeam primeiro
 app.post('/teams', validateTeam, (req, res) => {
@@ -48,26 +39,20 @@ app.post('/teams', validateTeam, (req, res) => {
   res.status(201).json(team);
 });
 
-app.put('/teams/:id', validateTeam, (req, res) => {
+app.put('/teams/:id', validateTeam, existingId, (req, res) => {
   const id = Number(req.params.id);
   const team = teams.find((t) => t.id === id);
-  if (team) {
-    const index = teams.indexOf(team);
-    const updated = { id, ...req.body };
-    teams.splice(index, 1, updated);
-    res.status(201).json(updated);
-  } else {
-    res.sendStatus(400);
-  }
+  const index = teams.indexOf(team);
+  const updated = { id, ...req.body };
+  teams.splice(index, 1, updated);
+  res.status(201).json(updated);
 });
 
-app.delete('/teams/:id', (req, res) => {
+app.delete('/teams/:id', existingId, (req, res) => {
   const id = Number(req.params.id);
   const team = teams.find((t) => t.id === id);
-  if (team) {
-    const index = teams.indexOf(team);
-    teams.splice(index, 1);
-  }
+  const index = teams.indexOf(team);
+  teams.splice(index, 1);
   res.sendStatus(204);
 });
 
