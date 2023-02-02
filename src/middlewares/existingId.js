@@ -1,6 +1,6 @@
 const readTeamsFile = require('../teams');
 
-const teams = readTeamsFile();
+const teams = async () => await readTeamsFile();
 
 const existingId = (req, res, next) => {
   const id = Number(req.params.id);
