@@ -30,11 +30,10 @@ app.post('/teams', validateTeam, async (req, res) => {
   ) {
     return res.status(422).json({ message: 'Já existe um time com essa sigla' });
   }
-  const { nextId } = getAllTeams;
-  let newId = nextId;
+  let { nextId } = getAllTeams;
   const team = { id: nextId, ...req.body };
   getAllTeams.push(team);
-  newId += 1;
+  nextId += 1;
   res.status(201).json(team);
 });
 
