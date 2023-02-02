@@ -7,19 +7,9 @@ const validateTeam = require('./middlewares/validateTeam');
 
 const existingId = require('./middlewares/existingId');
 
-let nextId = 3;
-const teams = [
-  {
-    id: 1,
-    nome: 'Clube de Regatas Vasco da Gama',
-    sigla: 'CRVG',
-  },
-  {
-    id: 2,
-    nome: 'Clube Atlético Mineiro',
-    sigla: 'CAM',
-  },
-];
+const readTeamsFile = require('./teams');
+
+const teams = readTeamsFile();
 
 app.use(express.json());
 
@@ -32,12 +22,12 @@ app.get('/teams/:id', existingId, (req, res) => {
 });
 
 // arranja os middlewares para chamar validateTeam primeiro
-app.post('/teams', validateTeam, (req, res) => {
-  const team = { id: nextId, ...req.body };
-  teams.push(team);
-  nextId += 1;
-  res.status(201).json(team);
-});
+// app.post('/teams', validateTeam, (req, res) => {
+//   const team = { id: nextId, ...req.body };
+//   teams.push(team);
+//   nextId += 1;
+//   res.status(201).json(team);
+// });
 
 app.put('/teams/:id', validateTeam, existingId, (req, res) => {
   const id = Number(req.params.id);

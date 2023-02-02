@@ -1,0 +1,17 @@
+{ 
+  "teams": [
+  {
+    "id": 1,
+    "nome": "Clube de Regatas Vasco da Gama",
+    "sigla": "CRVG"
+  },
+  {
+    "id": 2,
+    "nome": "Clube Atlético Mineiro",
+    "sigla": "CAM"
+  },
+  {
+    "nextId": 3
+  }
+]
+}
