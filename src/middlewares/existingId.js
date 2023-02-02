@@ -1,15 +1,12 @@
-const readTeamsFile = require('../teams');
+const teams = require('../teams');
 
-const teams = async () => await readTeamsFile();
-
-const existingId = (req, res, next) => {
+module.exports = async function existingId(req, res, next) {
   const id = Number(req.params.id);
-  const getTeam = teams.some((t) => t.id === id);
+  const getAllTeams = await teams.allTeams();
+  const getTeam = getAllTeams.some((t) => t.id === id);
   if (getTeam) {
     next();
   } else {
     res.sendStatus(404);
   }
 };
-
-module.exports = existingId;
